@@ -116,7 +116,7 @@ function searchByUser(user) {
 
 function addSearchParam(keystr, user) {
     console.log('add keystr:' + keystr + ' for user:' + user);
-    if (!/^[a-zA-Z]+$/.test(keystr)) {
+    if (!/^[a-zA-Z0-9]+$/.test(keystr)) {
         return;
     }
     if (searchMap.has(keystr)){
@@ -133,7 +133,7 @@ function addSearchParam(keystr, user) {
 
 function delSearchParam(keystr, user) {
     console.log('del keystr:' + keystr + ' for user:' + user);
-    if (!/^[a-zA-Z]+$/.test(keystr)) {
+    if (!/^[a-zA-Z0-9]+$/.test(keystr)) {
         return;
     }
     // Check if the key exists in the map
