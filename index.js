@@ -261,4 +261,28 @@ function getChannelByName(guild, channelName) {
 	return guild.channels.cache.find((channel) => channel.name === channelName);
 }
 
-client.login(token);
+async function connectWithRetry() {
+    const maxRetries = 5;
+    const retryDelay = 10000; // 10 seconds
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            await client.login(token);
+            console.log('Successfully connected to Discord!');
+            return;
+        } catch (error) {
+            console.log(`Connection attempt ${attempt} failed:`, error.message);
+            if (attempt < maxRetries) {
+                console.log(`Retrying in ${retryDelay/1000} seconds...`);
+                await new Promise(resolve => setTimeout(resolve, retryDelay));
+            } else {
+                throw error;
+            }
+        }
+    }
+}
+
+connectWithRetry().catch(error => {
+    console.error('Failed to connect after maximum retries:', error);
+    process.exit(1);
+});
